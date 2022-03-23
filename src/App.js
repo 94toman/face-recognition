@@ -26,6 +26,10 @@ function App() {
 
 export default App;
 
+
+
+
+
 const particlesOptions = 
   {
     fpsLimit: 120,
