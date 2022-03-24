@@ -1,27 +1,64 @@
-import React, { component } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-tsparticles';
+import Clarifai from 'clarifai';
 
-function App() {
-  return (
-    <div className="App">
-      <Particles className='particles'
-         id="tsparticles"
-         options={particlesOptions}
-       />
+const app = new Clarifai.App({
+  apiKey: '2b5281ceaf3244f3a406dd6ebc554be7'
+ });
 
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm />
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      input: '',      
+    }
+  }
 
-      {/* <FaceRecognition />    } */}
-    </div>
-  );
+  onInputChange = (event) => {
+    console.log(event.target.value);
+
+  }
+
+  onButtonSubmit = () => {
+    console.log('click');
+    app.models.predict(
+        "a403429f2ddf4b49b307e318f00e528b",
+         "https://www.faceapp.com/static/img/content/compare/beard-example-before@3x.jpg")
+         .then(
+            function(response) {
+                console.log(response)
+            },
+            function(err) {
+        }
+      )
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Particles className='particles'
+           id="tsparticles"
+           options={particlesOptions}
+         />
+  
+        <Navigation />
+        <Logo />
+        <Rank />
+        <ImageLinkForm 
+          onInputChange={this.onInputChange} 
+          onButtonSubmit={this.onButtonSubmit} 
+        />
+  
+        <FaceRecognition />
+      </div>
+    );
+  }
 }
 
 export default App;
