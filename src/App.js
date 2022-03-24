@@ -6,7 +6,10 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-tsparticles';
-import Clarifai from 'clarifai';
+import Clarifai, { COLOR_MODEL } from 'clarifai';
+
+ //https://github.com/Clarifai/clarifai-javascript
+ //https://www.clarifai.com/models/ai-face-detection  - check if it works
 
 const app = new Clarifai.App({
   apiKey: '2b5281ceaf3244f3a406dd6ebc554be7'
@@ -16,23 +19,24 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      input: '',      
+      input: '',
+      imageUrl: ''
     }
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);
-
+    this.setState({input: event.target.value})
   }
 
   onButtonSubmit = () => {
     console.log('click');
+    this.setState({imageUrl: this.state.input})
     app.models.predict(
-        "a403429f2ddf4b49b307e318f00e528b",
-         "https://www.faceapp.com/static/img/content/compare/beard-example-before@3x.jpg")
+        Clarifai.FACE_DETECT_MODEL,
+         this.state.input)
          .then(
             function(response) {
-                console.log(response)
+                console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
             },
             function(err) {
         }
@@ -55,7 +59,7 @@ class App extends Component {
           onButtonSubmit={this.onButtonSubmit} 
         />
   
-        <FaceRecognition />
+        <FaceRecognition imageUrl={this.state.imageUrl}/>
       </div>
     );
   }
@@ -63,14 +67,9 @@ class App extends Component {
 
 export default App;
 
-
-
-
-
 const particlesOptions = 
   {
     fpsLimit: 120,
-
     particles: {
       number: {
         density: {
