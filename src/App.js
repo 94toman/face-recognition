@@ -17,6 +17,78 @@ const app = new Clarifai.App({
   apiKey: '2b5281ceaf3244f3a406dd6ebc554be7'   // https://docs.clarifai.com/
  });
 
+ // Settings for the background animation. 
+const particlesOptions = 
+{
+  fpsLimit: 120,
+  particles: {
+    number: {
+      density: {
+        enable: true,
+        value_area: 800,
+      },
+      value: 60,
+    },
+    color: {
+      value: "#ffffff",
+    },
+    links: {
+      color: "#ffffff",
+      distance: 300,
+      enable: true,
+      opacity: 0.5,
+      width: 1,
+    },
+    collisions: {
+      enable: true,
+    },
+    move: {
+      direction: "none",
+      enable: true,
+      outMode: "bounce",
+      random: false,
+      speed: 1.5,
+      straight: false,
+    },
+
+    opacity: {
+      value: 0.5,
+    },
+    shape: {
+      type: "circle",
+    },
+  },
+  detectRetina: true,
+  interactivity: {
+    events: {
+      onClick: {
+        enable: true,
+        mode: "push",
+      },
+      onHover: {
+        enable: true,
+        mode: "repulse",
+      },
+      resize: true,
+    },
+    modes: {
+      bubble: {
+        distance: 150,
+        duration: 2,
+        opacity: 0.8,
+        size: 40,
+      },
+      push: {
+        quantity: 2,
+      },
+      repulse: {
+        distance: 150,
+        duration: 0.4,
+      },
+    },
+  },
+}
+
 class App extends Component {
   constructor(){
     super();
@@ -80,7 +152,7 @@ class App extends Component {
          this.state.input)
          .then(response => {
           if (response) {
-            fetch('http://localhost:3000/image', {  // Using Server side to increment user's Entry count in DB
+            fetch('http://localhost:3001/image', {  // Using Server side to increment user's Entry count in DB
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
@@ -141,75 +213,3 @@ class App extends Component {
 }
 
 export default App;
-
-// Settings for the background animation. 
-const particlesOptions = 
-  {
-    fpsLimit: 120,
-    particles: {
-      number: {
-        density: {
-          enable: true,
-          value_area: 800,
-        },
-        value: 60,
-      },
-      color: {
-        value: "#ffffff",
-      },
-      links: {
-        color: "#ffffff",
-        distance: 300,
-        enable: true,
-        opacity: 0.5,
-        width: 1,
-      },
-      collisions: {
-        enable: true,
-      },
-      move: {
-        direction: "none",
-        enable: true,
-        outMode: "bounce",
-        random: false,
-        speed: 1.5,
-        straight: false,
-      },
-
-      opacity: {
-        value: 0.5,
-      },
-      shape: {
-        type: "circle",
-      },
-    },
-    detectRetina: true,
-    interactivity: {
-      events: {
-        onClick: {
-          enable: true,
-          mode: "push",
-        },
-        onHover: {
-          enable: true,
-          mode: "repulse",
-        },
-        resize: true,
-      },
-      modes: {
-        bubble: {
-          distance: 150,
-          duration: 2,
-          opacity: 0.8,
-          size: 40,
-        },
-        push: {
-          quantity: 2,
-        },
-        repulse: {
-          distance: 150,
-          duration: 0.4,
-        },
-      },
-    },
-  }
