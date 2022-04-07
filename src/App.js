@@ -8,19 +8,19 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-tsparticles';
-import Clarifai, { COLOR_MODEL } from 'clarifai';
+import Clarifai from 'clarifai';
 
  //https://github.com/Clarifai/clarifai-javascript
  //https://www.clarifai.com/models/ai-face-detection  - check if it works
 
 const app = new Clarifai.App({
-  apiKey: '2b5281ceaf3244f3a406dd6ebc554be7'
+  apiKey: '2b5281ceaf3244f3a406dd6ebc554be7'   // https://docs.clarifai.com/
  });
 
 class App extends Component {
   constructor(){
     super();
-    this.state = {
+    this.state = {       // creating STATE
       input: '',
       imageUrl: '',
       box: {},
@@ -36,6 +36,7 @@ class App extends Component {
     }
   }
 
+  // Set current user to STATE after signin or registration
   loadUser = (data) => {
     this.setState({user: {
       id: data.id,
@@ -47,6 +48,7 @@ class App extends Component {
     })
   }
 
+  // Calculates CSS coordinates of the box on a face
   calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputimage');
@@ -60,15 +62,17 @@ class App extends Component {
     }
   }
 
+  // Sets the box coordinations into STATE
   displayFaceBox = (box) => {
-    console.log(box);
     this.setState({box: box})
   }
 
+  // Storing entered URL into STATE
   onInputChange = (event) => {
     this.setState({input: event.target.value})
   }
 
+  // User presses Detect -> Use API to get Face coordinates, increment user's Entry count
   onPictureSubmit = () => {
     this.setState({imageUrl: this.state.input})
     app.models.predict(
@@ -76,7 +80,7 @@ class App extends Component {
          this.state.input)
          .then(response => {
           if (response) {
-            fetch('http://localhost:3000/image', {
+            fetch('http://localhost:3000/image', {  // Using Server side to increment user's Entry count in DB
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
@@ -85,14 +89,16 @@ class App extends Component {
             })
             .then(response => response.json())
             .then(count => {
-              this.setState(Object.assign(this.state.user, { entries: count }))
+              this.setState(Object.assign(this.state.user, { entries: count }))  // Updates the Entry count on the screen
             })
+            .catch(console.log)
           }
            this.displayFaceBox(this.calculateFaceLocation(response))
         })
          .catch(err => console.log(err)) 
   }
 
+  // Navigation handling
   onRouteChange = (route) => {
     if (route === 'signout') {
       this.setState({ isSignedIn: false})
@@ -107,21 +113,20 @@ class App extends Component {
     const { isSignedIn, imageUrl, route, box} = this.state; 
     return (
       <div className="App">
-        <Particles className='particles'
+        <Particles className='particles'         //Background interactive particles
            id="tsparticles"
            options={particlesOptions}
          />
   
         <Navigation isSignedIn={ isSignedIn } onRouteChange={this.onRouteChange}/>
         <Logo />
-        { route === 'home' 
+        { route === 'home'           // if statement for Signin / Home
         ? <div>
             <Rank name={this.state.user.name} entries={this.state.user.entries}/>
             <ImageLinkForm 
               onInputChange={this.onInputChange} 
               onPictureSubmit={this.onPictureSubmit} 
-            />
-      
+            />      
             <FaceRecognition box={box} imageUrl={imageUrl}/>
           </div>
         : (
@@ -137,6 +142,7 @@ class App extends Component {
 
 export default App;
 
+// Settings for the background animation. 
 const particlesOptions = 
   {
     fpsLimit: 120,

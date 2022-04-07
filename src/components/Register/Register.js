@@ -3,25 +3,29 @@ import React from "react";
 class Register extends React.Component {
     constructor(props){
         super();
-        this.state = {
+        this.state = {   // STATE for storing user details
             name: '',
             email: '',
             password: ''
         }
     }
 
+    // Set content of Name field into STATE
     onNameChange = (event) => {
         this.setState({name: event.target.value})
     }
 
+    // Set content of Email field into STATE
     onEmailChange = (event) => {
         this.setState({email: event.target.value})
     }
 
+    // Set content of Password field into STATE
     onPasswordChange = (event) => {
         this.setState({password: event.target.value})
     }
 
+    // Send details to server, load user and display home page
     onSubmitRegister = () => {
         fetch('http://localhost:3000/register', {
             method: 'post',
@@ -34,11 +38,12 @@ class Register extends React.Component {
         })
         .then(response => response.json())
         .then(user => {
-            if (user) {
+            if (user.id) {
                 this.props.loadUser(user)
                 this.props.onRouteChange('home');
             }
         })
+        // For future development -> Display an error message to user
     }
 
     render() {

@@ -1,6 +1,7 @@
 import React from "react";
 
 const Navigation = ({ onRouteChange, isSignedIn }) =>{
+    // Displays content based on STATE
     if(isSignedIn) {
         return (
             <nav style={{display: 'flex', justifyContent: 'flex-end'}}>

@@ -3,20 +3,23 @@ import React from "react";
 class Signin extends React.Component {
     constructor(props){
         super();
-        this.state = {
+        this.state = {   // SATE for storing credentials
             signInEmail: '',
             signInPassword: ''
         }
     }
 
+    // Set content of Email field into STATE
     onEmailChange = (event) => {
         this.setState({signInEmail: event.target.value})
     }
 
+    // Set content of Password field into STATE
     onPasswordChange = (event) => {
         this.setState({signInPassword: event.target.value})
     }
 
+    // Send credentials to server, load user and display home page
     onSubmitSignin = () => {
         fetch('http://localhost:3000/signin', {
             method: 'post',
@@ -33,7 +36,7 @@ class Signin extends React.Component {
                 this.props.onRouteChange('home');
             }
         })
-        
+        // For future development -> Display an error message to user
     }
 
     render() {
