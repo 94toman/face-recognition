@@ -8,19 +8,10 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-tsparticles';
-import Clarifai from 'clarifai';
 
- //https://github.com/Clarifai/clarifai-javascript
- //https://www.clarifai.com/models/ai-face-detection  - check if it works
 
-const app = new Clarifai.App({
-  apiKey: '2b5281ceaf3244f3a406dd6ebc554be7'   // https://docs.clarifai.com/
- });
 
  // Settings for the background animation. 
-
-const particlesOptions2={fpsLimit:120,particles:{number:{density:{enable:!0,value_area:800},value:40},color:{value:"#ffffff"},links:{color:"#ffffff",distance:300,enable:!0,opacity:.5,width:1},collisions:{enable:!0},move:{direction:"none",enable:!0,outMode:"bounce",random:!1,speed:1.5,straight:!1},opacity:{value:.5},shape:{type:"circle"}},detectRetina:!0,interactivity:{events:{onClick:{enable:!0,mode:"push"},onHover:{enable:!0,mode:"repulse"},resize:!0},modes:{bubble:{distance:150,duration:2,opacity:.8,size:40},push:{quantity:2},repulse:{distance:150,duration:.4}}}};
-
 const particlesOptions = 
 {
   fpsLimit: 120,
@@ -53,7 +44,6 @@ const particlesOptions =
       speed: 1.5,
       straight: false,
     },
-
     opacity: {
       value: 0.5,
     },
@@ -149,28 +139,33 @@ class App extends Component {
 
   // User presses Detect -> Use API to get Face coordinates, increment user's Entry count
   onPictureSubmit = () => {
-    this.setState({imageUrl: this.state.input})
-    app.models.predict(
-        Clarifai.FACE_DETECT_MODEL,
-         this.state.input)
-         .then(response => {
-          if (response) {
-            fetch('http://localhost:3001/image', {  // Using Server side to increment user's Entry count in DB
-              method: 'put',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({
-                  id: this.state.user.id
-              })
-            })
-            .then(response => response.json())
-            .then(count => {
-              this.setState(Object.assign(this.state.user, { entries: count }))  // Updates the Entry count on the screen
-            })
-            .catch(console.log)
-          }
-           this.displayFaceBox(this.calculateFaceLocation(response))
+    this.setState({imageUrl: this.state.input});
+    fetch('http://localhost:3001/imageurl', {  // Using Server side to increment user's Entry count in DB
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            input: this.state.input
         })
-         .catch(err => console.log(err)) 
+      })
+      .then(res => res.json())
+      .then(response => {
+      if (response) {
+        fetch('http://localhost:3001/image', {  // Using Server side to increment user's Entry count in DB
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+              id: this.state.user.id
+          })
+        })
+        .then(response => response.json())
+        .then(count => {
+          this.setState(Object.assign(this.state.user, { entries: count }))  // Updates the Entry count on the screen
+        })
+        .catch(console.log)
+      }
+        this.displayFaceBox(this.calculateFaceLocation(response))
+    })
+      .catch(err => console.log(err)) 
   }
 
   // Navigation handling
