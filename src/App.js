@@ -18,6 +18,9 @@ const app = new Clarifai.App({
  });
 
  // Settings for the background animation. 
+
+const particlesOptions2={fpsLimit:120,particles:{number:{density:{enable:!0,value_area:800},value:40},color:{value:"#ffffff"},links:{color:"#ffffff",distance:300,enable:!0,opacity:.5,width:1},collisions:{enable:!0},move:{direction:"none",enable:!0,outMode:"bounce",random:!1,speed:1.5,straight:!1},opacity:{value:.5},shape:{type:"circle"}},detectRetina:!0,interactivity:{events:{onClick:{enable:!0,mode:"push"},onHover:{enable:!0,mode:"repulse"},resize:!0},modes:{bubble:{distance:150,duration:2,opacity:.8,size:40},push:{quantity:2},repulse:{distance:150,duration:.4}}}};
+
 const particlesOptions = 
 {
   fpsLimit: 120,
@@ -27,7 +30,7 @@ const particlesOptions =
         enable: true,
         value_area: 800,
       },
-      value: 60,
+      value: 40,
     },
     color: {
       value: "#ffffff",
