@@ -27,7 +27,7 @@ class Register extends React.Component {
 
     // Send details to server, load user and display home page
     onSubmitRegister = () => {
-        fetch('http://localhost:3001/register', {
+        fetch(`https://face-recognition-94toman.herokuapp.com/register`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

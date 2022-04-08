@@ -9,8 +9,6 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-tsparticles';
 
-
-
  // Settings for the background animation. 
 const particlesOptions = 
 {
@@ -140,7 +138,7 @@ class App extends Component {
   // User presses Detect -> Use API to get Face coordinates, increment user's Entry count
   onPictureSubmit = () => {
     this.setState({imageUrl: this.state.input});
-    fetch('http://localhost:3001/imageurl', {  // Using Server side to increment user's Entry count in DB
+    fetch(`https://face-recognition-94toman.herokuapp.com/imageurl`, {  // Using Server side to increment user's Entry count in DB
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -150,7 +148,7 @@ class App extends Component {
       .then(res => res.json())
       .then(response => {
       if (response) {
-        fetch('http://localhost:3001/image', {  // Using Server side to increment user's Entry count in DB
+        fetch(`https://face-recognition-94toman.herokuapp.com/image`, {  // Using Server side to increment user's Entry count in DB
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
