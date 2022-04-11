@@ -7,96 +7,28 @@ import Logo from './components/Logo/Logo';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
-import Particles from 'react-tsparticles';
+import Info from './components/Info/Info';
+import ParticlesSetting from './components/ParticlesSetting/ParticlesSetting';
 
- // Settings for the background animation. 
-const particlesOptions = 
-{
-  fpsLimit: 120,
-  particles: {
-    number: {
-      density: {
-        enable: true,
-        value_area: 800,
-      },
-      value: 40,
-    },
-    color: {
-      value: "#ffffff",
-    },
-    links: {
-      color: "#ffffff",
-      distance: 300,
-      enable: true,
-      opacity: 0.5,
-      width: 1,
-    },
-    collisions: {
-      enable: true,
-    },
-    move: {
-      direction: "none",
-      enable: true,
-      outMode: "bounce",
-      random: false,
-      speed: 1.5,
-      straight: false,
-    },
-    opacity: {
-      value: 0.5,
-    },
-    shape: {
-      type: "circle",
-    },
-  },
-  detectRetina: true,
-  interactivity: {
-    events: {
-      onClick: {
-        enable: true,
-        mode: "push",
-      },
-      onHover: {
-        enable: true,
-        mode: "repulse",
-      },
-      resize: true,
-    },
-    modes: {
-      bubble: {
-        distance: 150,
-        duration: 2,
-        opacity: 0.8,
-        size: 40,
-      },
-      push: {
-        quantity: 2,
-      },
-      repulse: {
-        distance: 150,
-        duration: 0.4,
-      },
-    },
-  },
+const defaultState = {    // for creating and reseting STATE
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',        
+    entries: 0,
+    joined: ''
+  }
 }
 
 class App extends Component {
   constructor(){
     super();
-    this.state = {       // creating STATE
-      input: '',
-      imageUrl: '',
-      box: {},
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',        
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state = defaultState;
   }
 
   // Set current user to STATE after signin or registration
@@ -169,7 +101,7 @@ class App extends Component {
   // Navigation handling
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({ isSignedIn: false})
+      this.setState = defaultState;
     } else if (route ==='home') {
       this.setState({ isSignedIn: true})
     }
@@ -181,10 +113,8 @@ class App extends Component {
     const { isSignedIn, imageUrl, route, box} = this.state; 
     return (
       <div className="App">
-        <Particles className='particles'         //Background interactive particles
-           id="tsparticles"
-           options={particlesOptions}
-         />
+        <ParticlesSetting />
+
   
         <Navigation isSignedIn={ isSignedIn } onRouteChange={this.onRouteChange}/>
         <Logo />
@@ -199,7 +129,10 @@ class App extends Component {
           </div>
         : (
           (route === 'signin' || route === 'signout')
-          ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+          ? <div>
+              <Info />
+              <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+            </div>
           : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
         )        
         }
