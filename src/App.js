@@ -114,8 +114,6 @@ class App extends Component {
     return (
       <div className="App">
         <ParticlesSetting />
-
-  
         <Navigation isSignedIn={ isSignedIn } onRouteChange={this.onRouteChange}/>
         <Logo />
         { route === 'home'           // if statement for Signin / Home
