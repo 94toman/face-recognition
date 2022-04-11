@@ -1,7 +1,6 @@
 # Face Recognition - Front end
 
 See [https://github.com/94toman/face-recognition-api](https://github.com/94toman/face-recognition-api) for Back end.
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
