@@ -101,7 +101,7 @@ class App extends Component {
   // Navigation handling
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState = defaultState;
+      this.setState(defaultState)   // sign out will clear the state
     } else if (route ==='home') {
       this.setState({ isSignedIn: true})
     }
